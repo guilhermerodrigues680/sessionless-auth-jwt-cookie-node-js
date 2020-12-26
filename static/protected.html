@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User info</title>
+</head>
+
+<body>
+  <h1>User info</h1>
+
+  <div id="msg">Carregando informacoes do usuario...</div>
+
+  <!-- SCRIPT -->
+  <script>
+    const divMsg = document.getElementById('msg')
+
+    async function init() {
+      const res = await fetch('/api/protected-route')
+
+      if (res.status === 400) {
+        const serveRes = await res.json()
+        console.error(400, serveRes)
+        divMsg.innerText = 'Server response: ' +  serveRes.message
+        return
+      }
+
+      const serveRes = await res.json()
+      divMsg.innerText = 'Server response: ' +  serveRes.message
+    }
+
+    init()
+  </script>
+</body>
+
+</html>

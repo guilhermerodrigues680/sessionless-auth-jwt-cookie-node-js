@@ -1,18 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cookie</title>
+  <title>Login</title>
 </head>
-
 <body>
-  <form action="/api/login" method="post">
-    <input type="text" name="username">
-    <input type="password" name="password">
+  <h1>Login</h1>
+
+  <form id="form">
+    <label>
+      Username:
+      <input type="text" name="username">
+    </label>
+    <br>
+    <label>
+      Password:
+      <input type="password" name="password">
+    </label>
+    <br>
+    <br>
     <input type="submit" value="Login">
   </form>
-</body>
 
+  <br>
+  <div id="msg"></div>
+
+  <!-- SCRIPT -->
+  <script>
+    const formElement = document.getElementById('form')
+    const divMsg = document.getElementById('msg')
+
+    formElement.onsubmit = async function (event) {
+      event.stopPropagation()
+      event.preventDefault()
+
+      const data = new URLSearchParams()
+      for (const pair of new FormData(formElement)) {
+        data.append(pair[0], pair[1])
+      }
+
+      const res = await fetch('/api/login', {
+        method: 'post',
+        body: data,
+      })
+
+      if (res.status === 400) {
+        const serveRes = await res.json()
+        console.error(400, serveRes)
+        divMsg.innerText = 'Server response: ' +  serveRes.message
+        return
+      }
+
+      window.location.href = "/protected.html";
+      return false
+    }
+  </script>
+</body>
 </html>
