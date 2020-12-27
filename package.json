@@ -4,7 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "binary-compiler": "rm -rf build/ && pkg --output build/app .",
+    "binary-compiler-host": "rm -rf build/ && pkg --target host --output build/app .",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": "index.js",
+  "pkg": {
+    "assets": [
+      "node_modules/**/*",
+      "static/**/*"
+    ],
+    "targets": [
+      "node14-macos-x64",
+      "node10-win-x64",
+      "node14-linux-x64"
+    ]
   },
   "keywords": [],
   "author": "",
